@@ -385,6 +385,7 @@ def test_outer(shape1, shape2):
         ["range", lambda x: [x.min(), x.max()], False],
         ["range2", lambda x: [[x.min(), x.max()], [x.max(), x.min()]], False],
         ["cumsum", lambda x: np.cumsum(x), True],
+        ["sum", lambda x: np.sum(x), True],
     ],
 )
 @pytest.mark.parametrize(
@@ -404,6 +405,8 @@ def test_apply_along_axis(func1d_name, func1d, specify_output_props, input_shape
         slices = tuple(slices)
         sample = np.array(func1d(a[slices]))
         output_shape = sample.shape
+        if len(output_shape) == 0:
+            output_shape = (1,)
         output_dtype = sample.dtype
 
     assert_eq(
